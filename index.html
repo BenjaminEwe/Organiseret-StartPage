@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <link rel="icon" href="images/icon.svg" type="image/x-icon">
+</head>
+<body>
+    <div class="mainBox">
+        <img
+        src="images/AdrianRoscoStef-small.jpg"
+        data-full-src="images/AdrianRoscoStef-medium.jpg"
+        alt="Image"
+        class="innerImage"
+        id="innerImage"
+        loading="lazy"
+        >
+        <div class="rightBox" id="rightBox">
+            <h1 class="title" id="greeting">Welcome user</h1>
+            <div id="siteList">
+            </div>
+        </div>
+
+        <div id="settings" class="hidden">
+            <h1 class="title">Settings</h1>
+
+            <h2 class="subtitle"> Set greeting </h2>
+            <form id="greetingForm" onsubmit="setGreeting(); return false;">
+                <input type="text" placeholder="Greeting text" class="inputField">
+                <input type="submit" value="Set Greeting">
+            </form>
+
+            <h2 class="subtitle"> Add site </h2>
+            <form id="addSiteForm" onsubmit="addSite(); return false;">
+                <input type="text" placeholder="Site name" class="inputField">
+                <input type="text" placeholder="Site URL" class="inputField">
+                <input type="submit" value="Add Site">
+            </form>
+
+            <h2 class="subtitle"> Edit sites </h2>
+            <button class="settingsButton" onclick="downloadSites()">Download Sites</button>
+            <button class="settingsButton" onclick="uploadSites()">Upload Sites</button>
+
+            <h2 class="subtitle"> Toggle settings icon </h2>
+            <button class="settingsButton" onclick="toggleButtonVisibility('settingsIcon')">Toggle Settings button</button>
+            <button class="creditsButton" onclick="toggleButtonVisibility('creditsLink')">Toggle Credits button</button>
+        </div>
+
+        <div id="credits" class="hidden">
+            <p><a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY">Pink and white flowers under blue sky during daytime</a> by <a href="https://unsplash.com/@roscoadrian?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Adrian &quot;Rosco&quot; Stef</a> on <a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a> - <a href="https://unsplash.com/license">Unsplash License</a></p>
+            <p><a href="https://heropatterns.com/">Endless Clouds</a> by <a href="https://heropatterns.com/">Steve Schoger</a> - <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+            <p><a href="https://thenounproject.com/icon/settings-1187810/">Settings</a> by &quot;<a href="https://thenounproject.com/creator/iconsguru/">i cons</a>&quot; from <a href="https://thenounproject.com/browse/icons/term/settings/" title="Settings Icons">Noun Project</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p>
+        </div>
+    </div>
+    <img 
+    src="images/settings.svg"
+    alt="Settings"
+    id="settingsIcon"
+    onclick="screenToggle('settings')"
+    onmouseover="this.style.opacity=0.7"
+    onmouseout="this.style.opacity=0.2"
+    title="ctrl+s"
+    >
+    <button
+    id="creditsLink"
+    aria-label="Credits"
+    alt="Credits"
+    onclick="screenToggle('credits')"
+    onmouseover="this.style.opacity=0.7"
+    onmouseout="this.style.opacity=0.2"
+    title="ctrl+c"
+    >Credits
+    </button>
+    <div class="toast" id="toast">
+        <p id="toastMessage"></p>
+    </div>
+</body>
+</html>
