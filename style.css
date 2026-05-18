@@ -35,11 +35,19 @@
     font-size: 2.4vh;
 }
 
+.img-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: oklch(0.69 0.14 230.78);
+    border-radius: 0.9em; /* 1.4em (mainBox border-radius) - 0.5em (mainBox padding) = 0.9em */
+}
+
 .innerImage {
     display: block;
     height: 100%;
     width: auto;
-    border-radius: 0.8em;
+    border-radius: 0.9em; /* 1.4em (mainBox border-radius) - 0.5em (mainBox padding) = 0.9em */
 }
 
 .link {
@@ -87,13 +95,13 @@ html * {
 
 .title {
     font-size: 3.6vh;
-    margin: 0 0 0.5em 0;
+    margin: 0 0 0 0;
     color: var(--dark-light);
 }
 
 .subtitle {
     font-size: 2.4vh;
-    margin: 0 0 1em 0;
+    margin: 0 0 0 0;
     color: var(--dark-light);
 }
 
@@ -131,4 +139,37 @@ a {
 
 p {
     color: var(--dark-light);
+}
+
+.settingsSection {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding-top: 0.5em;
+}
+
+#siteList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    max-height: 35vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.inputField {
+    background-color: transparent;
+    border: none;
+    border-bottom: 0.01em solid var(--dark-light);
+    color: var(--dark-light);
+    font-size: 0.8em;
+    min-width: 4ch;
+    max-width: 40ch;
+    box-sizing: content-box;
+    field-sizing: content; /* Firefox doesn't support this yet, but its just slightly uglyer. Will suposedly work in future */
+}
+
+.inputField:focus {
+    outline: none;
+    border-bottom: 0.01em solid var(--link-color);
 }

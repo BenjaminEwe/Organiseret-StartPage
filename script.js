@@ -1,3 +1,4 @@
+// Go between different screens (main, settings, credits)
 function screenToggle(ID) {
     const screens = ["rightBox", "settings", "credits"];
     const wasPressedScreenHidden = document.getElementById(ID).classList.contains("hidden");
@@ -72,7 +73,7 @@ function jsonToToml(json) {
     }).join('\n');
 }
 
-function TomlToJson(toml) {
+function tomlToJson(toml) {
     const siteRegex = /\[Site\]\s*name\s*=\s*"([^"]+)"\s*url\s*=\s*"([^"]+)"/g;
     const sites = [];
     let match;
@@ -118,7 +119,7 @@ function uploadSites() {
         let reader = new FileReader();
         reader.onload = function(e) {
             let toml = e.target.result;
-            let sites = TomlToJson(toml);
+            let sites = tomlToJson(toml);
             setSites(sites);
             loadUrls();
         };
@@ -139,26 +140,16 @@ function setGreeting() {
 }
 
 function loadGreeting() {
-    let greeting = localStorage.getItem("greeting") || "Welcome!";
-    document.getElementById("greeting").textContent = greeting;
-}
-
-function loadInnerImage() {
-    const imageElement = document.getElementById("innerImage");
-    if (!imageElement) {
-        return;
+    let greeting = localStorage.getItem("greeting");
+    let subGreeting = localStorage.getItem("subGreeting");
+    if (greeting) {
+        document.getElementById("greeting").textContent = greeting;
+        document.getElementById("greetingInput").value = greeting;
     }
-
-    const fullSrc = imageElement.dataset.fullSrc;
-    if (!fullSrc) {
-        return;
+    if (subGreeting) {
+        document.getElementById("subGreeting").textContent = subGreeting;
+        document.getElementById("subGreetingInput").value = subGreeting;
     }
-
-    const fullImage = new Image();
-    fullImage.src = fullSrc;
-    fullImage.onload = function() {
-        imageElement.src = fullSrc;
-    };
 }
 
 function toggleButtonVisibility(ID) {
@@ -172,19 +163,7 @@ function toggleButtonVisibility(ID) {
     }
 }
 
-function toggleSettingsButton() {
-    const settingsIcon = document.getElementById("settingsIcon");
-    if (settingsIcon.style.display === "none") {
-        settingsIcon.style.display = "block";
-        localStorage.setItem("settingsIconVisible", "true");
-    } else {
-        settingsIcon.style.display = "none";
-        localStorage.setItem("settingsIconVisible", "false");
-    }
-}
-
-
-
+// To make sure settings are applied on load.
 function loadIconVisibility() {
     const settingsIcon = document.getElementById("settingsIcon");
     const isSettingsVisible = localStorage.getItem("settingsIconVisible");
@@ -198,33 +177,80 @@ function loadIconVisibility() {
     }
 }
 
+// Used by keydown event listener to keep track of what the user has typed, for launching sites by typing their name.
+var typedString = "";
+
 document.addEventListener('keydown', function(event) {
-    const target = event.target;
-    const isTypingInField = target instanceof HTMLElement && (
-        target.matches('input, textarea, select') ||
-        target.isContentEditable
-    );
-
-    if (isTypingInField) {
-        return;
-    }
-
     if (event.key === 's' && event.ctrlKey) {
         event.preventDefault();
         screenToggle('settings');
-    }
-
-    if (event.key === 'c' && event.ctrlKey) {
+    } else if (event.key === 'c' && event.ctrlKey) {
         event.preventDefault();
         screenToggle('credits');
+    // Only listen for typing if the main screen is visible.
+    } else if (!document.getElementById("rightBox").classList.contains("hidden")) {
+        if (event.key === 'Escape') {
+            console.debug("Escape key pressed, flushed typed string");
+            typedString = "";
+        } else if (/^[a-zA-Z0-9]$/.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
+            typedString += event.key;
+            attemptLaunchTypedWord();
+        }
     }
 });
 
-window.addEventListener("load", loadInnerImage);
-
+// All the on-load stuff
 document.addEventListener("DOMContentLoaded", () => {
     loadUrls();
     loadGreeting();
     loadIconVisibility();
-    loadInnerImage();
+    if (getSites().length === 0) {
+        const defaultSites = [
+            { name: "DuckDuckGo", url: "https://duck.com" },
+            { name: "GitHub", url: "https://github.com" },
+            { name: "Reddit", url: "https://reddit.com" },
+            { name: "YouTube", url: "https://youtube.com" },
+            { name: "GitLab", url: "https://gitlab.com" },
+        ];
+        setSites(defaultSites);
+        loadUrls();
+    }
 });
+
+greetingInput = document.getElementById("greetingInput");
+greeting = document.getElementById("greeting");
+greetingInput.addEventListener('input', e => {
+    greeting.textContent = e.target.value;
+    greetingInput.value = e.target.value;
+    localStorage.setItem("greeting", e.target.value);
+});
+subGreetingInput = document.getElementById("subGreetingInput");
+subGreeting = document.getElementById("subGreeting");
+subGreetingInput.addEventListener('input', e => {
+    subGreeting.textContent = e.target.value;
+    subGreetingInput.value = e.target.value;
+    localStorage.setItem("subGreeting", e.target.value);
+});
+
+// FireFox warning
+if (navigator.userAgent.includes("Firefox")) {
+    console.warn("Firefox does not support some web-standards used, though it seems they are working on it: https://bugzilla.mozilla.org/show_bug.cgi?id=1832409");
+}
+
+// Launching of typed word
+function attemptLaunchTypedWord() {
+    console.debug("Attempting to launch typed word:", typedString);
+    const sites = getSites();
+    const matchingSites = sites.filter(site => site.name.toLowerCase().startsWith(typedString.toLowerCase()));
+    if (matchingSites.length === 1) {
+        const site = matchingSites[0];
+        console.debug("Launching site:", site, "for typed word:", typedString);
+        window.open(site.url, "_blank");
+        typedString = "";
+    } else if (matchingSites.length === 0) {
+        console.debug("No sites start with typed word:", typedString, "flushing typed string");
+        typedString = "";
+    } else {
+        console.debug(matchingSites.length, "sites start with typed word:", typedString);
+    }
+}

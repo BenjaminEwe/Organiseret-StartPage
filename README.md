@@ -5,3 +5,5 @@
 [Endless Clouds](https://heropatterns.com/) by [Steve Schoger](https://heropatterns.com/) - [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 [Settings](https://thenounproject.com/icon/settings-1187810/) by "[i cons](https://thenounproject.com/creator/iconsguru/)" from [Noun Project](https://thenounproject.com/browse/icons/term/settings/ "Settings Icons") - [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+
+[Flower](https://thenounproject.com/icon/flower-3376351/) by "[franc11s](https://thenounproject.com/creator/franc11s/)" from [Noun Project](https://thenounproject.com/browse/icons/term/flower/ "Flower Icons") - [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)

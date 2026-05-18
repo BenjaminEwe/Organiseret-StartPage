@@ -5,53 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
-    <link rel="icon" href="images/icon.svg" type="image/x-icon">
+    <link rel="icon" href="images/flower.svg" type="image/x-icon">
 </head>
 <body>
     <div class="mainBox">
-        <img
-        src="images/AdrianRoscoStef-small.jpg"
-        data-full-src="images/AdrianRoscoStef-medium.jpg"
-        alt="Image"
-        class="innerImage"
-        id="innerImage"
-        loading="lazy"
-        >
+        <div class="img-wrapper">
+            <img
+            src="images/AdrianRoscoStef-medium.jpg"
+            alt="Picture of pink and white flowers under blue sky during daytime. By Adrian &quot;Rosco&quot; Stef"
+            class="innerImage"
+            id="innerImage"
+            fetchpriority="high"
+            decoding="async"
+            >
+        </div>
         <div class="rightBox" id="rightBox">
-            <h1 class="title" id="greeting">Welcome user</h1>
+            <h1 class="title" id="greeting"> Welcome user </h1>
+            <h2 class="subtitle" id="subGreeting"> Press the settings icon in the top right or ctrl+s to add sites </h2>
+            <p></p>
             <div id="siteList">
             </div>
         </div>
+        <div id="settings" class="rightBox hidden">
+            <h1 class="title"> Settings </h1>
 
-        <div id="settings" class="hidden">
-            <h1 class="title">Settings</h1>
+            <div class="settingsSection">
+                <h2 class="subtitle"> Greeting: </h2>
+                <input type="text" placeholder="Greeting text" class="inputField" id="greetingInput">
+            </div>
 
-            <h2 class="subtitle"> Set greeting </h2>
-            <form id="greetingForm" onsubmit="setGreeting(); return false;">
-                <input type="text" placeholder="Greeting text" class="inputField">
-                <input type="submit" value="Set Greeting">
-            </form>
+            <div class="settingsSection">
+                <h2 class="subtitle"> Sub greeting: </h2>
+                <input type="text" placeholder="Sub greeting text" class="inputField" id="subGreetingInput">
+            </div>
+            <div class="settingsSection">
+                <h2 class="subtitle"> Add site: </h2>
+                <form id="addSiteForm" onsubmit="addSite(); return false;">
+                    <input type="text" placeholder="Site name" class="inputField">
+                    <input type="text" placeholder="Site URL" class="inputField">
+                    <input type="submit" value="Add Site">
+                </form>
+            </div>
+            <div class="settingsSection">
+                <h2 class="subtitle"> Edit sites: </h2>
+                <p>tbd</p>
+            </div>
+            <div class="settingsSection">
+                <h2 class="subtitle"> Toggle settings icon: </h2>
+                <button class="settingsButton" onclick="toggleButtonVisibility('settingsIcon')">Toggle Settings button</button>
+                <button class="creditsButton" onclick="toggleButtonVisibility('creditsLink')">Toggle Credits button</button>
+            </div>
+            <div class="settingsSection">
+                <h2 class="subtitle"> Import / Export: </h2>
+                <button class="settingsButton" onclick="downloadSites()">Download Sites</button>
+                <button class="settingsButton" onclick="uploadSites()">Upload Sites</button>
+            </div>
 
-            <h2 class="subtitle"> Add site </h2>
-            <form id="addSiteForm" onsubmit="addSite(); return false;">
-                <input type="text" placeholder="Site name" class="inputField">
-                <input type="text" placeholder="Site URL" class="inputField">
-                <input type="submit" value="Add Site">
-            </form>
-
-            <h2 class="subtitle"> Edit sites </h2>
-            <button class="settingsButton" onclick="downloadSites()">Download Sites</button>
-            <button class="settingsButton" onclick="uploadSites()">Upload Sites</button>
-
-            <h2 class="subtitle"> Toggle settings icon </h2>
-            <button class="settingsButton" onclick="toggleButtonVisibility('settingsIcon')">Toggle Settings button</button>
-            <button class="creditsButton" onclick="toggleButtonVisibility('creditsLink')">Toggle Credits button</button>
         </div>
-
-        <div id="credits" class="hidden">
+        <div id="credits" class="rightBox hidden">
             <p><a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY">Pink and white flowers under blue sky during daytime</a> by <a href="https://unsplash.com/@roscoadrian?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Adrian &quot;Rosco&quot; Stef</a> on <a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a> - <a href="https://unsplash.com/license">Unsplash License</a></p>
             <p><a href="https://heropatterns.com/">Endless Clouds</a> by <a href="https://heropatterns.com/">Steve Schoger</a> - <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
             <p><a href="https://thenounproject.com/icon/settings-1187810/">Settings</a> by &quot;<a href="https://thenounproject.com/creator/iconsguru/">i cons</a>&quot; from <a href="https://thenounproject.com/browse/icons/term/settings/" title="Settings Icons">Noun Project</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p>
+            <p><a href="https://thenounproject.com/icon/flower-3376351/">Flower</a> by &quot;<a href="https://thenounproject.com/creator/franc11s/">franc11s</a>&quot; from <a href="https://thenounproject.com/browse/icons/term/flower/" title="Flower Icons">Noun Project</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p>
         </div>
     </div>
     <img 
@@ -73,8 +88,5 @@
     title="ctrl+c"
     >Credits
     </button>
-    <div class="toast" id="toast">
-        <p id="toastMessage"></p>
-    </div>
 </body>
 </html>
