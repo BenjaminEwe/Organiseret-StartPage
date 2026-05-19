@@ -138,6 +138,18 @@ function setGreeting() {
     loadGreeting();
 }
 
+function toggleButtonVisibility(ID) {
+    const button = document.getElementById(ID);
+    if (localStorage.getItem(ID + "Visible") === "false") {
+        button.style.display = "block";
+        localStorage.setItem(ID + "Visible", "true");
+    } else {
+        button.style.display = "none";
+        localStorage.setItem(ID + "Visible", "false");
+    }
+}
+
+// Apply greeting and sub-greeting on load.
 function loadGreeting() {
     let greeting = localStorage.getItem("greeting");
     let subGreeting = localStorage.getItem("subGreeting");
@@ -151,18 +163,7 @@ function loadGreeting() {
     }
 }
 
-function toggleButtonVisibility(ID) {
-    const button = document.getElementById(ID);
-    if (button.style.display === "none") {
-        button.style.display = "block";
-        localStorage.setItem(ID + "Visible", "true");
-    } else {
-        button.style.display = "none";
-        localStorage.setItem(ID + "Visible", "false");
-    }
-}
-
-// To make sure settings are applied on load.
+// Apply icon visibility settings on load.
 function loadIconVisibility() {
     const settingsIcon = document.getElementById("settingsIcon");
     const isSettingsVisible = localStorage.getItem("settingsIconVisible");
@@ -180,7 +181,7 @@ function loadIconVisibility() {
     }
 }
 
-// To make sure scroll-bar visibility is applied on load.
+// Apply scroll-bar visibility settings on load.
 function loadScrollBarVisibility() {
     const siteList = document.getElementById("siteList");
     const isScrollBarVisible = localStorage.getItem("scrollBarVisible");
@@ -188,6 +189,15 @@ function loadScrollBarVisibility() {
         siteList.style.scrollbarWidth = "none";
     } else {
         document.getElementById("showScrollBarCheckbox").checked = true;
+    }
+}
+
+// Apply animation speed settings on load.
+function loadAnimationSpeed() {
+    const speed = localStorage.getItem("animationSpeed");
+    if (speed !== null) {
+        document.getElementById("animationSpeedSlider").value = speed;
+        updateAnimationSpeed();
     }
 }
 
@@ -219,6 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadGreeting();
     loadIconVisibility();
     loadScrollBarVisibility();
+    loadAnimationSpeed();
     // Set default sites if none.
     if (getSites().length === 0) {
         const defaultSites = [
@@ -279,4 +290,16 @@ function toggleScrollBar() {
         siteList.style.scrollbarWidth = "none";
         localStorage.setItem("scrollBarVisible", "false");
     }
+}
+
+function updateAnimationSpeed() {
+    const slider = document.getElementById("animationSpeedSlider");
+    const speed = slider.value;
+    localStorage.setItem("animationSpeed", speed);
+    if (speed > 0) {
+        document.documentElement.style.setProperty('--bg-animation-speed', 80 / speed + "s");
+    } else {
+        document.documentElement.style.setProperty('--bg-animation-speed', "0s");
+    }
+    console.debug("Updated animation speed to:", speed);
 }

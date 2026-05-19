@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
     <link rel="icon" href="images/flower.svg" type="image/x-icon">
+    <link rel="preload" href="/images/endless-clouds.svg" as="image" crossorigin="anonymous">
+    <title>Start Page</title>
 </head>
 <body>
     <div class="mainBox">
         <div class="img-wrapper">
             <img
-            src="images/AdrianRoscoStef-medium.jpg"
+            src="images/AdrianRoscoStef-medium.avif"
             alt="Picture of pink and white flowers under blue sky during daytime. By Adrian &quot;Rosco&quot; Stef"
             class="innerImage"
             id="innerImage"
@@ -30,12 +32,12 @@
             <h1 class="title"> Settings </h1>
 
             <div class="settingsSection">
-                <h2 class="subtitle"> Greeting: </h2>
+                <label class="subtitle" for="greetingInput"> Greeting: </label>
                 <input type="text" placeholder="Greeting text" class="inputField" id="greetingInput">
             </div>
 
             <div class="settingsSection">
-                <h2 class="subtitle"> Sub greeting: </h2>
+                <label class="subtitle" for="subGreetingInput"> Sub greeting: </label>
                 <input type="text" placeholder="Sub greeting text" class="inputField" id="subGreetingInput">
             </div>
             <div class="settingsSection">
@@ -49,25 +51,29 @@
                 <button class="button" onclick="editSites()">Edit Sites</button>
             </div>
             <div class="settingsSection">
-                <h2 class="subtitle"> Show settings icon: </h2>
-                <label class="switch" aria-label="Show settings icon checkbox">
+                <label class="subtitle" for="showSettingsIconCheckbox"> Show settings icon: </label>
+                <label class="switch">
                     <input type="checkbox" id="showSettingsIconCheckbox" onchange="toggleButtonVisibility('settingsIcon')">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="settingsSection">
-                <h2 class="subtitle"> Show credits link: </h2>
+                <label class="subtitle" for="showCreditsLinkCheckbox"> Show credits link: </label>
                 <label class="switch" aria-label="Show credits link checkbox">
                     <input type="checkbox" id="showCreditsLinkCheckbox" onchange="toggleButtonVisibility('creditsLink')">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="settingsSection">
-                <h2 class="subtitle"> Show scroll-bar: </h2>
+                <label class="subtitle" for="showScrollBarCheckbox"> Show scroll-bar: </label>
                 <label class="switch" aria-label="Show scroll-bar checkbox">
                     <input type="checkbox" id="showScrollBarCheckbox" onchange="toggleScrollBar()">
                     <span class="slider"></span>
                 </label>
+            </div>
+            <div class="settingsSection">
+                <label class="subtitle" for="animationSpeedSlider"> Animation speed: </label>
+                <input type="range" min="0" max="25" value="15" class="animSlider" id="animationSpeedSlider" oninput="updateAnimationSpeed()" name="animation Speed Slider">
             </div>
             <div class="settingsSection">
                 <h2 class="subtitle"> Import / Export: </h2>
