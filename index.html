@@ -39,26 +39,40 @@
                 <input type="text" placeholder="Sub greeting text" class="inputField" id="subGreetingInput">
             </div>
             <div class="settingsSection">
-                <h2 class="subtitle"> Add site: </h2>
                 <form id="addSiteForm" onsubmit="addSite(); return false;">
-                    <input type="text" placeholder="Site name" class="inputField">
-                    <input type="text" placeholder="Site URL" class="inputField">
-                    <input type="submit" value="Add Site">
+                    <input type="submit" value="Add Site" class="button">
+                    <input type="text" placeholder="Site name" class="inputField" name="siteName">
+                    <input type="text" placeholder="Site URL" class="inputField" name="siteUrl">
                 </form>
             </div>
             <div class="settingsSection">
-                <h2 class="subtitle"> Edit sites: </h2>
-                <p>tbd</p>
+                <button class="button" onclick="editSites()">Edit Sites</button>
             </div>
             <div class="settingsSection">
-                <h2 class="subtitle"> Toggle settings icon: </h2>
-                <button class="settingsButton" onclick="toggleButtonVisibility('settingsIcon')">Toggle Settings button</button>
-                <button class="creditsButton" onclick="toggleButtonVisibility('creditsLink')">Toggle Credits button</button>
+                <h2 class="subtitle"> Show settings icon: </h2>
+                <label class="switch" aria-label="Show settings icon checkbox">
+                    <input type="checkbox" id="showSettingsIconCheckbox" onchange="toggleButtonVisibility('settingsIcon')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settingsSection">
+                <h2 class="subtitle"> Show credits link: </h2>
+                <label class="switch" aria-label="Show credits link checkbox">
+                    <input type="checkbox" id="showCreditsLinkCheckbox" onchange="toggleButtonVisibility('creditsLink')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settingsSection">
+                <h2 class="subtitle"> Show scroll-bar: </h2>
+                <label class="switch" aria-label="Show scroll-bar checkbox">
+                    <input type="checkbox" id="showScrollBarCheckbox" onchange="toggleScrollBar()">
+                    <span class="slider"></span>
+                </label>
             </div>
             <div class="settingsSection">
                 <h2 class="subtitle"> Import / Export: </h2>
-                <button class="settingsButton" onclick="downloadSites()">Download Sites</button>
-                <button class="settingsButton" onclick="uploadSites()">Upload Sites</button>
+                <button class="button" onclick="downloadSites()">Download Sites</button>
+                <button class="button" onclick="uploadSites()">Upload Sites</button>
             </div>
 
         </div>

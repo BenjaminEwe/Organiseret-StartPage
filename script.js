@@ -43,7 +43,6 @@ function addSite() {
     sites.push({ name: siteName, url: siteURL });
 
     setSites(sites);
-    loadUrls();
 }
 
 function loadUrls() {
@@ -89,6 +88,7 @@ function getSites() {
 
 function setSites(sites) {
     localStorage.setItem("sites", JSON.stringify(sites));
+    loadUrls();
 }
 
 function downloadSites() {
@@ -121,7 +121,6 @@ function uploadSites() {
             let toml = e.target.result;
             let sites = tomlToJson(toml);
             setSites(sites);
-            loadUrls();
         };
         reader.readAsText(file);
     }
@@ -169,11 +168,26 @@ function loadIconVisibility() {
     const isSettingsVisible = localStorage.getItem("settingsIconVisible");
     if (isSettingsVisible === "false") {
         settingsIcon.style.display = "none";
+    } else {
+        document.getElementById("showSettingsIconCheckbox").checked = true;
     }
     const creditsLink = document.getElementById("creditsLink");
     const isCreditsVisible = localStorage.getItem("creditsLinkVisible");
     if (isCreditsVisible === "false") {
         creditsLink.style.display = "none";
+    } else {
+        document.getElementById("showCreditsLinkCheckbox").checked = true;
+    }
+}
+
+// To make sure scroll-bar visibility is applied on load.
+function loadScrollBarVisibility() {
+    const siteList = document.getElementById("siteList");
+    const isScrollBarVisible = localStorage.getItem("scrollBarVisible");
+    if (isScrollBarVisible === "false") {
+        siteList.style.scrollbarWidth = "none";
+    } else {
+        document.getElementById("showScrollBarCheckbox").checked = true;
     }
 }
 
@@ -204,6 +218,8 @@ document.addEventListener("DOMContentLoaded", () => {
     loadUrls();
     loadGreeting();
     loadIconVisibility();
+    loadScrollBarVisibility();
+    // Set default sites if none.
     if (getSites().length === 0) {
         const defaultSites = [
             { name: "DuckDuckGo", url: "https://duck.com" },
@@ -213,7 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
             { name: "GitLab", url: "https://gitlab.com" },
         ];
         setSites(defaultSites);
-        loadUrls();
     }
 });
 
@@ -252,5 +267,16 @@ function attemptLaunchTypedWord() {
         typedString = "";
     } else {
         console.debug(matchingSites.length, "sites start with typed word:", typedString);
+    }
+}
+
+function toggleScrollBar() {
+    const siteList = document.getElementById("siteList");
+    if (siteList.style.scrollbarWidth === "none") {
+        siteList.style.scrollbarWidth = "auto";
+        localStorage.setItem("scrollBarVisible", "true");
+    } else {
+        siteList.style.scrollbarWidth = "none";
+        localStorage.setItem("scrollBarVisible", "false");
     }
 }

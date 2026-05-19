@@ -22,7 +22,7 @@
 }
 
 .rightBox {
-    padding-left: 1em;
+    padding-left: 0.6em;
     box-sizing: border-box;
     font-size: 2.4vh;
 }
@@ -48,16 +48,6 @@
     height: 100%;
     width: auto;
     border-radius: 0.9em; /* 1.4em (mainBox border-radius) - 0.5em (mainBox padding) = 0.9em */
-}
-
-.link {
-    text-decoration: none;
-    color: var(--dark-light);
-    padding: 0.6em 1.2em;
-    background-color: var(--dark-semi-dark);
-    border-radius: 0.4em;
-    border: 1px solid var(--dark-semi-light);
-    transition: background-color 0.3s ease;
 }
 
 body {
@@ -97,6 +87,7 @@ html * {
     font-size: 3.6vh;
     margin: 0 0 0 0;
     color: var(--dark-light);
+    max-width: 50vh;
 }
 
 .subtitle {
@@ -152,9 +143,18 @@ p {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5em;
-    max-height: 35vh;
+    max-height: 40vh;
     overflow-y: auto;
-    scrollbar-width: none;
+}
+
+.link {
+    text-decoration: none;
+    color: var(--dark-light);
+    padding: 0.5em 0.8em;
+    background-color: var(--dark-semi-dark);
+    border-radius: 0.4em;
+    border: 1px solid var(--dark-semi-light);
+    transition: background-color 0.3s ease;
 }
 
 .inputField {
@@ -164,7 +164,7 @@ p {
     color: var(--dark-light);
     font-size: 0.8em;
     min-width: 4ch;
-    max-width: 40ch;
+    max-width: 53vh;
     box-sizing: content-box;
     field-sizing: content; /* Firefox doesn't support this yet, but its just slightly uglyer. Will suposedly work in future */
 }
@@ -172,4 +172,66 @@ p {
 .inputField:focus {
     outline: none;
     border-bottom: 0.01em solid var(--link-color);
+}
+
+.button {
+    height: 3.5vh;
+    font-size: 2vh;
+    width: auto;
+    padding: 0.4em 0.8em;
+    background-color: var(--dark-semi-dark);
+    border: 1px solid var(--dark-semi-light);
+    border-radius: 0.4em;
+    color: var(--dark-light);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    height: 2vh;
+    width: 4.4vh;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+    background-color: var(--dark-semi-dark);
+    transition: 0.4s;
+    border-radius: 0.2em;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.6vh;
+    width: 1.1vh;
+    left: 0.1em;
+    bottom: 0.215vh;
+    background-color: white;
+    transition: 0.2s;
+    border-radius: 0.17em;
+}
+
+input:checked + .slider {
+    background-color: var(--link-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 0.1vh var(--link-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(2.85vh);
 }
