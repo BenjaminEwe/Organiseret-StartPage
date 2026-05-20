@@ -45,11 +45,16 @@ function addSite() {
     setSites(sites);
 }
 
-function loadUrls() {
+function loadUrls(sites) {
     let siteList = document.getElementById("siteList");
     siteList.innerHTML = "";
 
-    let sites = getSites();
+    if (sites === undefined) {
+        sites = getSites();
+    }
+    if (localStorage.getItem("sortLinks") === "true") {
+        sites = sites.toSorted((a, b) => a.name.localeCompare(b.name));
+    }
 
     sites.forEach(function(site) {
         let link = document.createElement("a");
@@ -64,7 +69,7 @@ function loadUrls() {
 function jsonToToml(json) {
     return json.map(item => {
         return [
-            '[Site]',
+            '[[Site]]',
             'name = "' + item.name + '"',
             'url = "' + item.url + '"',
             ''
@@ -73,7 +78,11 @@ function jsonToToml(json) {
 }
 
 function tomlToJson(toml) {
-    const siteRegex = /\[Site\]\s*name\s*=\s*"([^"]+)"\s*url\s*=\s*"([^"]+)"/g;
+    // Remove all lines that are not in the format of [[Site]], name = "something" or url = "something". Not foolproof but enough to allow comments etc.
+    const wrongRegex = /^(?!\[\[Site\]\]$)(?!url = ".*"$)(?!name = ".*"$).*$/gm;
+    toml = toml.replace(wrongRegex, "");
+
+    const siteRegex = /\[\[Site\]\]\s*name\s*=\s*"([^"]+)"\s*url\s*=\s*"([^"]+)"/g;
     const sites = [];
     let match;
     while ((match = siteRegex.exec(toml)) !== null) {
@@ -149,7 +158,7 @@ function toggleButtonVisibility(ID) {
     }
 }
 
-// Apply greeting and sub-greeting on load.
+// Apply greeting and sub-greeting.
 function loadGreeting() {
     let greeting = localStorage.getItem("greeting");
     let subGreeting = localStorage.getItem("subGreeting");
@@ -160,44 +169,6 @@ function loadGreeting() {
     if (subGreeting) {
         document.getElementById("subGreeting").textContent = subGreeting;
         document.getElementById("subGreetingInput").value = subGreeting;
-    }
-}
-
-// Apply icon visibility settings on load.
-function loadIconVisibility() {
-    const settingsIcon = document.getElementById("settingsIcon");
-    const isSettingsVisible = localStorage.getItem("settingsIconVisible");
-    if (isSettingsVisible === "false") {
-        settingsIcon.style.display = "none";
-    } else {
-        document.getElementById("showSettingsIconCheckbox").checked = true;
-    }
-    const creditsLink = document.getElementById("creditsLink");
-    const isCreditsVisible = localStorage.getItem("creditsLinkVisible");
-    if (isCreditsVisible === "false") {
-        creditsLink.style.display = "none";
-    } else {
-        document.getElementById("showCreditsLinkCheckbox").checked = true;
-    }
-}
-
-// Apply scroll-bar visibility settings on load.
-function loadScrollBarVisibility() {
-    const siteList = document.getElementById("siteList");
-    const isScrollBarVisible = localStorage.getItem("scrollBarVisible");
-    if (isScrollBarVisible === "false") {
-        siteList.style.scrollbarWidth = "none";
-    } else {
-        document.getElementById("showScrollBarCheckbox").checked = true;
-    }
-}
-
-// Apply animation speed settings on load.
-function loadAnimationSpeed() {
-    const speed = localStorage.getItem("animationSpeed");
-    if (speed !== null) {
-        document.getElementById("animationSpeedSlider").value = speed;
-        updateAnimationSpeed();
     }
 }
 
@@ -216,6 +187,11 @@ document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             console.debug("Escape key pressed, flushed typed string");
             typedString = "";
+            loadUrls();
+        } else if (event.key === 'Backspace') {
+            typedString = typedString.slice(0, -1);
+            cachedSites = null;
+            attemptLaunchTypedWord();
         } else if (/^[a-zA-Z0-9]$/.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
             typedString += event.key;
             attemptLaunchTypedWord();
@@ -227,22 +203,37 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener("DOMContentLoaded", () => {
     loadUrls();
     loadGreeting();
-    loadIconVisibility();
-    loadScrollBarVisibility();
-    loadAnimationSpeed();
-    // Set default sites if none.
-    if (getSites().length === 0) {
-        const defaultSites = [
-            { name: "DuckDuckGo", url: "https://duck.com" },
-            { name: "GitHub", url: "https://github.com" },
-            { name: "Reddit", url: "https://reddit.com" },
-            { name: "YouTube", url: "https://youtube.com" },
-            { name: "GitLab", url: "https://gitlab.com" },
-        ];
-        setSites(defaultSites);
+
+    if (localStorage.getItem("settingsIconVisible") === "false") {
+        document.getElementById("settingsIcon").style.display = "none";
+    } else {
+        document.getElementById("showSettingsIconCheckbox").checked = true;
+    }
+
+    if (localStorage.getItem("creditsLinkVisible") === "false") {
+        document.getElementById("creditsLink").style.display = "none";
+    } else {
+        document.getElementById("showCreditsLinkCheckbox").checked = true;
+    }
+    
+    if (localStorage.getItem("scrollBarVisible") === "false") {
+        document.getElementById("siteList").style.scrollbarWidth = "none";
+    } else {
+        document.getElementById("showScrollBarCheckbox").checked = true;
+    }
+    
+    const speed = localStorage.getItem("animationSpeed");
+    if (speed !== null) {
+        document.getElementById("animationSpeedSlider").value = speed;
+        updateAnimationSpeed();
+    }
+
+    if (localStorage.getItem("sortLinks") === "true") {
+        document.getElementById("sortLinksCheckbox").checked = true;
     }
 });
 
+// Greeting and sub-greeting input listeners
 greetingInput = document.getElementById("greetingInput");
 greeting = document.getElementById("greeting");
 greetingInput.addEventListener('input', e => {
@@ -258,24 +249,35 @@ subGreetingInput.addEventListener('input', e => {
     localStorage.setItem("subGreeting", e.target.value);
 });
 
-// FireFox warning
-if (navigator.userAgent.includes("Firefox")) {
-    console.warn("Firefox does not support some web-standards used, though it seems they are working on it: https://bugzilla.mozilla.org/show_bug.cgi?id=1832409");
-}
+let cachedSites = null;
 
-// Launching of typed word
 function attemptLaunchTypedWord() {
     console.debug("Attempting to launch typed word:", typedString);
-    const sites = getSites();
-    const matchingSites = sites.filter(site => site.name.toLowerCase().startsWith(typedString.toLowerCase()));
+    console.debug("Cached sites:", cachedSites);
+
+    if (cachedSites === null) {
+        cachedSites = getSites();
+    }
+
+    const matchingSites = cachedSites.filter(site => site.name.toLowerCase().startsWith(typedString.toLowerCase()));
+    cachedSites = matchingSites; // Cache the filtered list for faster subsequent filtering as the user types more characters
+
+    
+    loadUrls(matchingSites);
+
+    // Launching of typed word if 1 match
     if (matchingSites.length === 1) {
         const site = matchingSites[0];
         console.debug("Launching site:", site, "for typed word:", typedString);
         window.open(site.url, "_blank");
         typedString = "";
+        cachedSites = null; // Clear cache when resetting
+        loadUrls();
     } else if (matchingSites.length === 0) {
         console.debug("No sites start with typed word:", typedString, "flushing typed string");
         typedString = "";
+        cachedSites = null; // Clear cache when resetting
+        loadUrls();
     } else {
         console.debug(matchingSites.length, "sites start with typed word:", typedString);
     }
@@ -302,4 +304,10 @@ function updateAnimationSpeed() {
         document.documentElement.style.setProperty('--bg-animation-speed', "0s");
     }
     console.debug("Updated animation speed to:", speed);
+}
+
+function toggleLinkSorting() {
+    const sortLinksCheckbox = document.getElementById("sortLinksCheckbox");
+    localStorage.setItem("sortLinks", sortLinksCheckbox.checked ? "true" : "false");
+    loadUrls();
 }

@@ -51,23 +51,30 @@
                 <button class="button" onclick="editSites()">Edit Sites</button>
             </div>
             <div class="settingsSection">
-                <label class="subtitle" for="showSettingsIconCheckbox"> Show settings icon: </label>
+                <label class="subtitle" for="showSettingsIconCheckbox"> Settings icon: </label>
                 <label class="switch">
                     <input type="checkbox" id="showSettingsIconCheckbox" onchange="toggleButtonVisibility('settingsIcon')">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="settingsSection">
-                <label class="subtitle" for="showCreditsLinkCheckbox"> Show credits link: </label>
-                <label class="switch" aria-label="Show credits link checkbox">
+                <label class="subtitle" for="showCreditsLinkCheckbox"> Credits link: </label>
+                <label class="switch">
                     <input type="checkbox" id="showCreditsLinkCheckbox" onchange="toggleButtonVisibility('creditsLink')">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="settingsSection">
-                <label class="subtitle" for="showScrollBarCheckbox"> Show scroll-bar: </label>
-                <label class="switch" aria-label="Show scroll-bar checkbox">
+                <label class="subtitle" for="showScrollBarCheckbox"> Scroll bar: </label>
+                <label class="switch">
                     <input type="checkbox" id="showScrollBarCheckbox" onchange="toggleScrollBar()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settingsSection">
+                <label class="subtitle" for="sortLinksCheckbox"> Sort links: </label>
+                <label class="switch">
+                    <input type="checkbox" id="sortLinksCheckbox" onchange="toggleLinkSorting()">
                     <span class="slider"></span>
                 </label>
             </div>
