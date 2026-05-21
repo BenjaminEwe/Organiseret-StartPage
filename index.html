@@ -10,6 +10,25 @@
     <title>Start Page</title>
 </head>
 <body>
+    <img 
+    src="images/settings.svg"
+    alt="Settings"
+    id="settingsIcon"
+    tabindex="0"
+    role="button"
+    onclick="screenToggle('settings')"
+    onkeydown="if(event.key==='Enter'||event.key===' ') screenToggle('settings')"
+    onmouseover="this.style.opacity=0.7"
+    onmouseout="this.style.opacity=0.2"
+    title="ctrl+s"
+    >
+    <button
+    id="creditsLink"
+    aria-label="Credits"
+    onclick="screenToggle('credits')"
+    title="ctrl+c"
+    >Credits
+    </button>
     <div class="mainBox">
         <div class="img-wrapper">
             <img
@@ -48,7 +67,7 @@
                 </form>
             </div>
             <div class="settingsSection">
-                <button class="button" onclick="editSites()">Edit Sites</button>
+                <button class="button" onclick="enterRemoveSitesMode()">Remove Sites</button>
             </div>
             <div class="settingsSection">
                 <label class="subtitle" for="showSettingsIconCheckbox"> Settings icon: </label>
@@ -96,24 +115,5 @@
             <p><a href="https://thenounproject.com/icon/flower-3376351/">Flower</a> by &quot;<a href="https://thenounproject.com/creator/franc11s/">franc11s</a>&quot; from <a href="https://thenounproject.com/browse/icons/term/flower/" title="Flower Icons">Noun Project</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p>
         </div>
     </div>
-    <img 
-    src="images/settings.svg"
-    alt="Settings"
-    id="settingsIcon"
-    onclick="screenToggle('settings')"
-    onmouseover="this.style.opacity=0.7"
-    onmouseout="this.style.opacity=0.2"
-    title="ctrl+s"
-    >
-    <button
-    id="creditsLink"
-    aria-label="Credits"
-    alt="Credits"
-    onclick="screenToggle('credits')"
-    onmouseover="this.style.opacity=0.7"
-    onmouseout="this.style.opacity=0.2"
-    title="ctrl+c"
-    >Credits
-    </button>
 </body>
 </html>

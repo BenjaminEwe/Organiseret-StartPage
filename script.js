@@ -1,3 +1,10 @@
+let typedString = "";
+let cachedSites = null;
+let currentState = null;
+const STATE_EDIT = "edit";
+const STATE_SETTINGS = "settings";
+const STATE_CREDITS = "credits";
+
 // Go between different screens (main, settings, credits)
 function screenToggle(ID) {
     const screens = ["rightBox", "settings", "credits"];
@@ -18,6 +25,19 @@ function screenToggle(ID) {
 
     if (!wasPressedScreenHidden) {
         document.getElementById("rightBox").classList.remove("hidden");
+        currentState = null;
+    } else {
+        switch (ID) {
+        case "settings":
+            currentState = STATE_SETTINGS;
+            break;
+        case "credits":
+            currentState = STATE_CREDITS;
+            break;
+        default:
+            currentState = null;
+            break;
+        } 
     }
 }
 
@@ -40,9 +60,10 @@ function addSite() {
 
     console.debug("Adding site:", siteName, siteURL);
     let sites = getSites();
-    sites.push({ name: siteName, url: siteURL });
+    sites.push({ name: siteName, url: siteURL, UUID: crypto.randomUUID() });
 
     setSites(sites);
+    loadUrls();
 }
 
 function loadUrls(sites) {
@@ -59,8 +80,13 @@ function loadUrls(sites) {
     sites.forEach(function(site) {
         let link = document.createElement("a");
         link.href = site.url;
+        link.dataset.UUID = site.UUID;
         link.textContent = site.name;
         link.className = "link";
+        if (currentState === STATE_EDIT) {
+            link.onclick = removeSite;
+            link.style.cursor = "pointer";
+        }
         siteList.appendChild(link);
     }
     );
@@ -86,7 +112,7 @@ function tomlToJson(toml) {
     const sites = [];
     let match;
     while ((match = siteRegex.exec(toml)) !== null) {
-        sites.push({ name: match[1], url: match[2] });
+        sites.push({ name: match[1], url: match[2], UUID: crypto.randomUUID() });
     }
     return sites;
 }
@@ -97,7 +123,6 @@ function getSites() {
 
 function setSites(sites) {
     localStorage.setItem("sites", JSON.stringify(sites));
-    loadUrls();
 }
 
 function downloadSites() {
@@ -130,6 +155,7 @@ function uploadSites() {
             let toml = e.target.result;
             let sites = tomlToJson(toml);
             setSites(sites);
+            loadUrls();
         };
         reader.readAsText(file);
     }
@@ -172,10 +198,37 @@ function loadGreeting() {
     }
 }
 
-// Used by keydown event listener to keep track of what the user has typed, for launching sites by typing their name.
-var typedString = "";
-
+// Keyboard listeners
 document.addEventListener('keydown', function(event) {
+    console.debug("Key pressed:", event.key, "Current state:", currentState);
+    if (currentState === STATE_EDIT) {
+        if (event.key === 'Escape') {
+            console.debug("Escape key pressed, exiting edit mode...");
+            loadUrls();
+            loadGreeting();
+            cachedSites = null;
+            typedString = "";
+            currentState = null;
+            return;
+        } else if (event.key === 'Backspace') {
+            typedString = typedString.slice(0, -1);
+            cachedSites = null;
+            updateSiteCache();
+        } else if (/^[a-zA-Z0-9]$/.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
+            typedString += event.key;
+            updateSiteCache();
+        }
+        return;
+    }
+
+    if (currentState === STATE_SETTINGS) {
+        if (event.key === 'Escape' && !(document.activeElement instanceof HTMLInputElement)) {
+            screenToggle('settings');
+            return;
+        }
+        return;
+    }
+
     if (event.key === 's' && event.ctrlKey) {
         event.preventDefault();
         screenToggle('settings');
@@ -187,13 +240,16 @@ document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             console.debug("Escape key pressed, flushed typed string");
             typedString = "";
+            cachedSites = null;
             loadUrls();
         } else if (event.key === 'Backspace') {
             typedString = typedString.slice(0, -1);
             cachedSites = null;
+            updateSiteCache()
             attemptLaunchTypedWord();
         } else if (/^[a-zA-Z0-9]$/.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
             typedString += event.key;
+            updateSiteCache();
             attemptLaunchTypedWord();
         }
     }
@@ -234,8 +290,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Greeting and sub-greeting input listeners
-greetingInput = document.getElementById("greetingInput");
-greeting = document.getElementById("greeting");
+const greetingInput = document.getElementById("greetingInput");
+const greeting = document.getElementById("greeting");
 greetingInput.addEventListener('input', e => {
     greeting.textContent = e.target.value;
     greetingInput.value = e.target.value;
@@ -249,37 +305,31 @@ subGreetingInput.addEventListener('input', e => {
     localStorage.setItem("subGreeting", e.target.value);
 });
 
-let cachedSites = null;
+function updateSiteCache() {
+    cachedSites = (cachedSites === null ? getSites() : cachedSites);
+    cachedSites = cachedSites.filter(site => site.name.toLowerCase().startsWith(typedString.toLowerCase()));
+    loadUrls(cachedSites);
+}
 
 function attemptLaunchTypedWord() {
     console.debug("Attempting to launch typed word:", typedString);
-    console.debug("Cached sites:", cachedSites);
-
-    if (cachedSites === null) {
-        cachedSites = getSites();
-    }
-
-    const matchingSites = cachedSites.filter(site => site.name.toLowerCase().startsWith(typedString.toLowerCase()));
-    cachedSites = matchingSites; // Cache the filtered list for faster subsequent filtering as the user types more characters
-
-    
-    loadUrls(matchingSites);
+    console.assert(cachedSites !== null, "cachedSites should not be null when attempting to launch typed word.");
 
     // Launching of typed word if 1 match
-    if (matchingSites.length === 1) {
-        const site = matchingSites[0];
+    if (cachedSites.length === 1) {
+        const site = cachedSites[0];
         console.debug("Launching site:", site, "for typed word:", typedString);
-        window.open(site.url, "_blank");
+        window.open(site.url, "_blank", "noopener,noreferrer");
         typedString = "";
         cachedSites = null; // Clear cache when resetting
         loadUrls();
-    } else if (matchingSites.length === 0) {
+    } else if (cachedSites.length === 0) {
         console.debug("No sites start with typed word:", typedString, "flushing typed string");
         typedString = "";
         cachedSites = null; // Clear cache when resetting
         loadUrls();
     } else {
-        console.debug(matchingSites.length, "sites start with typed word:", typedString);
+        console.debug(cachedSites.length, "sites start with typed word:", typedString);
     }
 }
 
@@ -310,4 +360,30 @@ function toggleLinkSorting() {
     const sortLinksCheckbox = document.getElementById("sortLinksCheckbox");
     localStorage.setItem("sortLinks", sortLinksCheckbox.checked ? "true" : "false");
     loadUrls();
+}
+
+function enterRemoveSitesMode() {
+    console.debug("Entering edit mode...");
+    loadUrls();
+    document.getElementById("greeting").textContent = "Edit mode";
+    document.getElementById("subGreeting").textContent = "Click a site to remove it. Press Escape to exit edit mode.";
+    screenToggle("rightBox");
+    currentState = STATE_EDIT;
+}
+
+function removeSite(event) {
+    event.preventDefault();
+    const site = event.currentTarget;
+    const siteName = site.textContent;
+    const siteUUID = site.dataset.UUID;
+    console.debug("Removing site:", siteName, "UUID:", siteUUID);
+
+    let sites = getSites();
+    console.debug(siteName, "Removing site:", sites.filter(s => s.UUID === siteUUID));
+
+    sites = sites.filter(s => !(s.UUID === siteUUID));
+    site.remove(); // Not strictly necessary but nice visual feedback.
+    setSites(sites);
+    cachedSites = null;
+    updateSiteCache();
 }

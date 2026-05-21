@@ -1,6 +1,5 @@
 # To-Do List
 
-- Allow option to remove sites
 - Automatic pulling of site icons?
 - Add option to open sites in new tab
 - After typing url, autofill suggestions for name and icon, but let it be changeable

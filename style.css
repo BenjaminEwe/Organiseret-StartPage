@@ -30,7 +30,7 @@
 
 .settings {
     display: flex;
-    align-items: left;
+    align-items: flex-start;
     padding: 0.5em;
     box-sizing: border-box;
     font-size: 2.4vh;
@@ -132,6 +132,10 @@ html * {
     border: none;
 }
 
+#creditsLink:hover {
+    opacity: 0.7;
+}
+
 .hidden {
     display: none;
 }
@@ -157,6 +161,7 @@ p {
     gap: 0.5em;
     max-height: 40vh;
     overflow-y: auto;
+    margin-bottom: 0.5vh;
 }
 
 .link {
@@ -178,7 +183,7 @@ p {
     min-width: 4ch;
     max-width: 53vh;
     box-sizing: content-box;
-    field-sizing: content; /* Firefox doesn't support this yet, but its just slightly uglyer. Will suposedly work in future */
+    field-sizing: content; /* Firefox doesn't support this yet, but its just slightly uglier. Will supposedly work in future */
 }
 
 .inputField:focus {
@@ -220,7 +225,7 @@ p {
     bottom: 0;
     cursor: pointer;
     background-color: var(--dark-semi-dark);
-    transition: 0.4s;
+    transition: background-color 0.4s;
     border-radius: 0.2em;
 }
 
@@ -240,8 +245,9 @@ input:checked + .slider {
     background-color: var(--link-color);
 }
 
-input:focus + .slider {
-    box-shadow: 0 0 0.1vh var(--link-color);
+input:focus-visible + .slider {
+    outline: 1px solid var(--link-color);
+    outline-offset: 1px;
 }
 
 input:checked + .slider:before {
