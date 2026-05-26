@@ -16,16 +16,11 @@
     id="settingsIcon"
     tabindex="0"
     role="button"
-    onclick="screenToggle('settings')"
-    onkeydown="if(event.key==='Enter'||event.key===' ') screenToggle('settings')"
-    onmouseover="this.style.opacity=0.7"
-    onmouseout="this.style.opacity=0.2"
     title="ctrl+s"
     >
     <button
     id="creditsLink"
     aria-label="Credits"
-    onclick="screenToggle('credits')"
     title="ctrl+c"
     >Credits
     </button>
@@ -60,55 +55,56 @@
                 <input type="text" placeholder="Sub greeting text" class="inputField" id="subGreetingInput">
             </div>
             <div class="settingsSection">
-                <form id="addSiteForm" onsubmit="addSite(); return false;">
+                <form id="addSiteForm">
                     <input type="submit" value="Add Site" class="button">
                     <input type="text" placeholder="Site name" class="inputField" name="siteName">
                     <input type="text" placeholder="Site URL" class="inputField" name="siteUrl">
                 </form>
             </div>
             <div class="settingsSection">
-                <button class="button" onclick="enterRemoveSitesMode()">Remove Sites</button>
+                <button class="button" id="removeSitesBtn">Remove Sites</button>
             </div>
             <div class="settingsSection">
                 <label class="subtitle" for="showSettingsIconCheckbox"> Settings icon: </label>
                 <label class="switch">
-                    <input type="checkbox" id="showSettingsIconCheckbox" onchange="toggleButtonVisibility('settingsIcon')">
+                    <input type="checkbox" id="showSettingsIconCheckbox">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="settingsSection">
                 <label class="subtitle" for="showCreditsLinkCheckbox"> Credits link: </label>
                 <label class="switch">
-                    <input type="checkbox" id="showCreditsLinkCheckbox" onchange="toggleButtonVisibility('creditsLink')">
+                    <input type="checkbox" id="showCreditsLinkCheckbox">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="settingsSection">
                 <label class="subtitle" for="showScrollBarCheckbox"> Scroll bar: </label>
                 <label class="switch">
-                    <input type="checkbox" id="showScrollBarCheckbox" onchange="toggleScrollBar()">
+                    <input type="checkbox" id="showScrollBarCheckbox">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="settingsSection">
                 <label class="subtitle" for="sortLinksCheckbox"> Sort links: </label>
                 <label class="switch">
-                    <input type="checkbox" id="sortLinksCheckbox" onchange="toggleLinkSorting()">
+                    <input type="checkbox" id="sortLinksCheckbox">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="settingsSection">
                 <label class="subtitle" for="animationSpeedSlider"> Animation speed: </label>
-                <input type="range" min="0" max="25" value="15" class="animSlider" id="animationSpeedSlider" oninput="updateAnimationSpeed()" name="animation Speed Slider">
+                <input type="range" min="0" max="25" value="15" class="animSlider" id="animationSpeedSlider" name="animation Speed Slider">
             </div>
             <div class="settingsSection">
                 <h2 class="subtitle"> Import / Export: </h2>
-                <button class="button" onclick="downloadSites()">Download Sites</button>
-                <button class="button" onclick="uploadSites()">Upload Sites</button>
+                <button class="button" id="downloadSitesBtn">Download Sites</button>
+                <button class="button" id="uploadSitesBtn">Upload Sites</button>
             </div>
 
         </div>
         <div id="credits" class="rightBox hidden">
+            <p>Inspired by <a href="https://archive.ph/e5ziv">Homely Startpage</a> by bogdantalant.</p>
             <p><a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY">Pink and white flowers under blue sky during daytime</a> by <a href="https://unsplash.com/@roscoadrian?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Adrian &quot;Rosco&quot; Stef</a> on <a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a> - <a href="https://unsplash.com/license">Unsplash License</a></p>
             <p><a href="https://heropatterns.com/">Endless Clouds</a> by <a href="https://heropatterns.com/">Steve Schoger</a> - <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
             <p><a href="https://thenounproject.com/icon/settings-1187810/">Settings</a> by &quot;<a href="https://thenounproject.com/creator/iconsguru/">i cons</a>&quot; from <a href="https://thenounproject.com/browse/icons/term/settings/" title="Settings Icons">Noun Project</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p>

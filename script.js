@@ -222,7 +222,9 @@ document.addEventListener('keydown', function(event) {
     }
 
     if (currentState === STATE_SETTINGS) {
-        if (event.key === 'Escape' && !(document.activeElement instanceof HTMLInputElement)) {
+        if (!(document.activeElement instanceof HTMLInputElement) && 
+        ((event.key === 'Escape') || (event.key === 's' && event.ctrlKey))) {
+            event.preventDefault();
             screenToggle('settings');
             return;
         }
@@ -286,6 +288,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (localStorage.getItem("sortLinks") === "true") {
         document.getElementById("sortLinksCheckbox").checked = true;
+    }
+
+    // All the event listeners for buttons and stuff
+    const settingsIcon = document.getElementById("settingsIcon");
+    if (settingsIcon) {
+        settingsIcon.addEventListener('click', () => screenToggle('settings'));
+        settingsIcon.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') screenToggle('settings');
+        });
+        settingsIcon.addEventListener('mouseover', function() { this.style.opacity = 0.7; });
+        settingsIcon.addEventListener('mouseout', function() { this.style.opacity = 0.2; });
+    }
+
+    const creditsLink = document.getElementById("creditsLink");
+    if (creditsLink) {
+        creditsLink.addEventListener('click', () => screenToggle('credits'));
+    }
+
+    const addSiteForm = document.getElementById("addSiteForm");
+    if (addSiteForm) {
+        addSiteForm.addEventListener('submit', event => {
+            event.preventDefault();
+            addSite();
+        });
+    }
+
+    const removeSitesBtn = document.getElementById("removeSitesBtn");
+    if (removeSitesBtn) {
+        removeSitesBtn.addEventListener('click', enterRemoveSitesMode);
+    }
+
+    const showSettingsIconCb = document.getElementById("showSettingsIconCheckbox");
+    if (showSettingsIconCb) {
+        showSettingsIconCb.addEventListener('change', () => toggleButtonVisibility('settingsIcon'));
+    }
+
+    const showCreditsLinkCb = document.getElementById("showCreditsLinkCheckbox");
+    if (showCreditsLinkCb) {
+        showCreditsLinkCb.addEventListener('change', () => toggleButtonVisibility('creditsLink'));
+    }
+
+    const showScrollBarCb = document.getElementById("showScrollBarCheckbox");
+    if (showScrollBarCb) {
+        showScrollBarCb.addEventListener('change', toggleScrollBar);
+    }
+
+    const sortLinksCb = document.getElementById("sortLinksCheckbox");
+    if (sortLinksCb) {
+        sortLinksCb.addEventListener('change', toggleLinkSorting);
+    }
+
+    const animSpeedSlider = document.getElementById("animationSpeedSlider");
+    if (animSpeedSlider) {
+        animSpeedSlider.addEventListener('input', updateAnimationSpeed);
+    }
+
+    const downloadBtn = document.getElementById("downloadSitesBtn");
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', downloadSites);
+    }
+
+    const uploadBtn = document.getElementById("uploadSitesBtn");
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', uploadSites);
     }
 });
 
