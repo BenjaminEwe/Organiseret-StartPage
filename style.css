@@ -7,6 +7,7 @@
     --background-color: oklch(99% 0.01411 85);
     --link-color: oklch(72.486% 0.10464 329.383);
     --bg-animation-speed: 15s;
+    --firefox-offset: 0.5px;
 }
 
 .mainBox {
@@ -26,6 +27,10 @@
     padding-left: 0.6em;
     box-sizing: border-box;
     font-size: 2.4vh;
+    max-height: 50vh;
+    overflow-y: auto;
+    margin-bottom: 0.5vh;
+    width: 100%;
 }
 
 .settings {
@@ -74,7 +79,7 @@ body::before {
 
     background-color: var(--cloud-color);
     mask-image: url(images/endless-clouds.svg);
-    mask-size: 25vh;
+    mask-size: calc(25vh + var(--firefox-offset)); /* Firefox doesn't handle mask-size rounding correctly, the offset allows fixing it */
     transform: rotate(-30deg);
     z-index: -1;
     pointer-events: none;

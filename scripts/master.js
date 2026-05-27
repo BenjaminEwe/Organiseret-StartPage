@@ -1,7 +1,7 @@
 import { getSites, setSites } from "./storage.js";
 import { loadUrls, screenToggle, addSite, enterRemoveSitesMode } from "./ui.js";
 import { downloadSites, uploadSites } from "./importExport.js";
-import { toggleButtonVisibility, toggleScrollBar, updateAnimationSpeed, toggleLinkSorting } from "./settings.js";
+import { toggleButtonVisibility, toggleScrollBar, updateAnimationSpeed, toggleLinkSorting, updateFirefoxOffset } from "./settings.js";
 import { loadGreeting, initGreetingListeners } from "./greeting.js";
 import { initController } from "./controller.js";
 import { STATES, setCurrentState } from "./state.js";
@@ -19,7 +19,7 @@ if (localStorage.getItem("scrollBarVisible") === null) {
     localStorage.setItem("scrollBarVisible", "true");
 }
 if (localStorage.getItem("animationSpeed") === null) {
-    localStorage.setItem("animationSpeed", "5");
+    localStorage.setItem("animationSpeed", "0");
 }
 if (localStorage.getItem("sortLinks") === null) {
     localStorage.setItem("sortLinks", "false");
@@ -85,6 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
         updateAnimationSpeed();
     }
 
+    const firefoxOffset = localStorage.getItem("firefoxOffset");
+    if (firefoxOffset !== null) {
+        document.getElementById("firefoxOffsetSlider").value = firefoxOffset;
+        updateFirefoxOffset();
+    }
+
     if (localStorage.getItem("sortLinks") === "true") {
         document.getElementById("sortLinksCheckbox").checked = true;
     }
@@ -113,4 +119,16 @@ document.addEventListener("DOMContentLoaded", () => {
         animSpeedSlider.addEventListener('input', updateAnimationSpeed);
     }
 
+    const firefoxOffsetSlider = document.getElementById("firefoxOffsetSlider");
+    if (firefoxOffsetSlider) {
+        firefoxOffsetSlider.addEventListener('input', updateFirefoxOffset);
+    }
+
+    if (!navigator.userAgent.includes("Firefox")) {
+        console.debug("Hiding Firefox offset setting for non-Firefox browser");
+        document.getElementById("firefoxOffsetSection").style.display = "none";
+
+    }
 });
+
+

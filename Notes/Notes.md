@@ -12,11 +12,11 @@ Notice that LCP goes from about 7 seconds to about 3.2 seconds (tested with 4x c
 
 ## Firefox problems :(
 
-- Firefox for some reason doesn't support the `field-sizing: content` property, which is used on the settings screen. It seems this will be implemented soon though: https://bugzilla.mozilla.org/show_bug.cgi?id=1832409
-- Firefox has significantly lower frame-rate of the background animation than MS Edge and Google Chrome. (irrespective of "recommended performance settings" being on or off)
-- At certain scales / screen sizes, Firefox shows small gaps between the repeating pattern of the background mask. I have not been able to recreate this in MS Edge.
+- Firefox for some reason doesn't support the `field-sizing: content` property, which is used on the settings screen. It seems this will be implemented soon though: [Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1832409)
+- Firefox has significantly lower frame-rate of the background animation than MS Edge and Google Chrome. (irrespective of "recommended performance settings" being on or off) - This also results in **significant** GPU and CPU usage when animation is enabled. It is therefore not recommended to use animation on Firefox.
+- At certain scales / screen sizes, Firefox shows small gaps between the repeating pattern of the background mask. I have not been able to recreate this in MS Edge. To solve this a Firefox-only settings slider has been added to allow adding a slight offset to the background pattern. There is no offset that makes it work for *all* scales, but it should be possible to find an offset that works well enough.
 
-![Gap in firefox](FirefoxGap.png)
+![Gap in Firefox](FirefoxGap.png)
 
 ## Considerations
 

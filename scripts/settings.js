@@ -37,3 +37,11 @@ export function toggleLinkSorting() {
     const sortLinksCheckbox = document.getElementById("sortLinksCheckbox");
     localStorage.setItem("sortLinks", sortLinksCheckbox.checked ? "true" : "false");
 }
+
+export function updateFirefoxOffset() {
+    const slider = document.getElementById("firefoxOffsetSlider");
+    const offset = slider.value;
+    localStorage.setItem("firefoxOffset", offset);
+    document.documentElement.style.setProperty('--firefox-offset', offset + "px");
+    console.debug("Updated Firefox offset to:", offset);
+}

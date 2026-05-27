@@ -27,7 +27,7 @@ To do local development, run a local server (For example VSCode's [Live Server](
 
 ## Credits
 
-Inspired by [Homely Startpage](https://archive.ph/e5ziv) by bogdantalant
+Inspired by [Homely Startpage](https://archive.ph/e5ziv) by Bogdantalant
 
 [Pink and white flowers under blue sky during daytime](https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY) by [Adrian "Rosco" Stef](https://unsplash.com/@roscoadrian?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) - [Unsplash License](https://unsplash.com/license)
 

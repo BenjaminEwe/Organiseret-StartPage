@@ -3,11 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="scripts/master.js"></script>
-    <link rel="icon" href="images/flower.svg" type="image/x-icon">
-    <link rel="preload" href="images/endless-clouds.svg" as="image" crossorigin="anonymous">
     <title>Start Page</title>
+    
+    <link rel="preload" as="image"
+        href="images/endless-clouds.svg"
+        crossorigin="anonymous"
+        type="image/svg+xml"
+        fetchpriority="high">
+    <link rel="preload" as="image" 
+        href="images/AdrianRoscoStef-medium.avif" 
+        imagesrcset="images/AdrianRoscoStef-300.avif 300w,
+                    images/AdrianRoscoStef-400.avif 400w,
+                    images/AdrianRoscoStef-600.avif 600w,
+                    images/AdrianRoscoStef-960.avif 960w,
+                    images/AdrianRoscoStef-1440.avif 1440w"
+        imagesizes="25vw"
+        type="image/avif"
+        fetchpriority="high">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script type="module" src="scripts/master.js"></script>
+    <link rel="modulepreload" href="scripts/controller.js">
+    <link rel="modulepreload" href="scripts/greeting.js">
+    <link rel="modulepreload" href="scripts/importExport.js">
+    <link rel="modulepreload" href="scripts/linkLauncher.js">
+    <link rel="modulepreload" href="scripts/settings.js">
+    <link rel="modulepreload" href="scripts/state.js">
+    <link rel="modulepreload" href="scripts/storage.js">
+    <link rel="modulepreload" href="scripts/ui.js">
+
+    <link rel="icon" href="images/flower.svg" type="image/x-icon">
 </head>
 <body>
     <img 
@@ -17,6 +43,7 @@
     tabindex="0"
     role="button"
     title="ctrl+s"
+    fetchpriority="low"
     >
     <button
     id="creditsLink"
@@ -27,12 +54,18 @@
     <div class="mainBox">
         <div class="img-wrapper">
             <img
-            src="images/AdrianRoscoStef-medium.avif"
+            src="images/AdrianRoscoStef-600.avif"
+            srcset="images/AdrianRoscoStef-300.avif 300w,
+                    images/AdrianRoscoStef-400.avif 400w,
+                    images/AdrianRoscoStef-600.avif 600w,
+                    images/AdrianRoscoStef-960.avif 960w,
+                    images/AdrianRoscoStef-1440.avif 1440w"
+            sizes="25vw"
             alt="Picture of pink and white flowers under blue sky during daytime. By Adrian &quot;Rosco&quot; Stef"
             class="innerImage"
             id="innerImage"
             fetchpriority="high"
-            decoding="async"
+            decoding="sync"
             >
         </div>
         <div class="rightBox" id="rightBox">
@@ -96,15 +129,18 @@
                 <label class="subtitle" for="animationSpeedSlider"> Animation speed: </label>
                 <input type="range" min="0" max="25" value="15" class="animSlider" id="animationSpeedSlider" name="animation Speed Slider">
             </div>
+            <div class="settingsSection" id="firefoxOffsetSection">
+                <label class="subtitle" for="firefoxOffsetSlider"> Firefox offset: </label>
+                <input type="range" min="0" max="1" step="0.05" value="0.5" class="animSlider" id="firefoxOffsetSlider" name="firefox Offset Slider">
+            </div>
             <div class="settingsSection">
                 <h2 class="subtitle"> Import / Export: </h2>
                 <button class="button" id="downloadSitesBtn">Download Sites</button>
                 <button class="button" id="uploadSitesBtn">Upload Sites</button>
             </div>
-
         </div>
         <div id="credits" class="rightBox hidden">
-            <p>Inspired by <a href="https://archive.ph/e5ziv">Homely Startpage</a> by bogdantalant</p>
+            <p>Inspired by <a href="https://archive.ph/e5ziv">Homely Startpage</a> by Bogdantalant</p>
             <p><a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY">Pink and white flowers under blue sky during daytime</a> by <a href="https://unsplash.com/@roscoadrian?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Adrian &quot;Rosco&quot; Stef</a> on <a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a> - <a href="https://unsplash.com/license">Unsplash License</a></p>
             <p><a href="https://heropatterns.com/">Endless Clouds</a> by <a href="https://heropatterns.com/">Steve Schoger</a> - <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
             <p><a href="https://thenounproject.com/icon/settings-1187810/">Settings</a> by &quot;<a href="https://thenounproject.com/creator/iconsguru/">i cons</a>&quot; from <a href="https://thenounproject.com/browse/icons/term/settings/" title="Settings Icons">Noun Project</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p>
