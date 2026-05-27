@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <script type="module" src="scripts/master.js"></script>
     <link rel="icon" href="images/flower.svg" type="image/x-icon">
-    <link rel="preload" href="/images/endless-clouds.svg" as="image" crossorigin="anonymous">
+    <link rel="preload" href="images/endless-clouds.svg" as="image" crossorigin="anonymous">
     <title>Start Page</title>
 </head>
 <body>
@@ -57,8 +57,8 @@
             <div class="settingsSection">
                 <form id="addSiteForm">
                     <input type="submit" value="Add Site" class="button">
-                    <input type="text" placeholder="Site name" class="inputField" name="siteName">
-                    <input type="text" placeholder="Site URL" class="inputField" name="siteUrl">
+                    <input type="text" placeholder="Site name" class="inputField" name="siteName" id="siteNameInput">
+                    <input type="text" placeholder="Site URL" class="inputField" name="siteUrl" id="siteURLInput">
                 </form>
             </div>
             <div class="settingsSection">
@@ -104,7 +104,7 @@
 
         </div>
         <div id="credits" class="rightBox hidden">
-            <p>Inspired by <a href="https://archive.ph/e5ziv">Homely Startpage</a> by bogdantalant.</p>
+            <p>Inspired by <a href="https://archive.ph/e5ziv">Homely Startpage</a> by bogdantalant</p>
             <p><a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY">Pink and white flowers under blue sky during daytime</a> by <a href="https://unsplash.com/@roscoadrian?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Adrian &quot;Rosco&quot; Stef</a> on <a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a> - <a href="https://unsplash.com/license">Unsplash License</a></p>
             <p><a href="https://heropatterns.com/">Endless Clouds</a> by <a href="https://heropatterns.com/">Steve Schoger</a> - <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
             <p><a href="https://thenounproject.com/icon/settings-1187810/">Settings</a> by &quot;<a href="https://thenounproject.com/creator/iconsguru/">i cons</a>&quot; from <a href="https://thenounproject.com/browse/icons/term/settings/" title="Settings Icons">Noun Project</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p>

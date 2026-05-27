@@ -73,7 +73,7 @@ body::before {
     height: 200%;
 
     background-color: var(--cloud-color);
-    mask-image: url(/images/endless-clouds.svg);
+    mask-image: url(images/endless-clouds.svg);
     mask-size: 25vh;
     transform: rotate(-30deg);
     z-index: -1;
