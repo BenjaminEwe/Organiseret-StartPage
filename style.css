@@ -27,7 +27,7 @@
     padding-left: 0.6em;
     box-sizing: border-box;
     font-size: 2.4vh;
-    max-height: 50vh;
+    max-height: 51vh;
     overflow-y: auto;
     margin-bottom: 0.5vh;
     width: 100%;
@@ -263,4 +263,8 @@ input:checked + .slider:before {
     width: 30vh;
     position: inherit;
     accent-color: var(--link-color);
+}
+
+.highlighted {
+    color: var(--link-color);
 }

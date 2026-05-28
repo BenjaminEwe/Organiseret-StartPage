@@ -28,5 +28,18 @@ export function attemptLaunchTypedWord() {
         loadUrls();
     } else {
         console.debug(cachedSites.length, "sites start with typed word:", typedString);
+        highlightTypedString(typedString);
+    }
+}
+
+function highlightTypedString(typedString) {
+    const siteList = document.getElementById("siteList");
+    const sites = siteList.getElementsByClassName("link");
+    const typedLength = typedString.length;
+    for (let siteElement of sites) {
+        let name = siteElement.innerHTML;
+        const firstPart = name.substring(0, typedLength);
+        const restPart = name.substring(typedLength);
+        siteElement.innerHTML = name.replace(firstPart, `<span class="highlighted">${firstPart}</span>`);
     }
 }
