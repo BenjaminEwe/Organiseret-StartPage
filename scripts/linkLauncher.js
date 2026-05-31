@@ -50,8 +50,22 @@ function highlightTypedString(typedString) {
     const sites = siteList.getElementsByClassName("link");
     const typedLength = typedString.length;
     for (let siteElement of sites) {
-        let name = siteElement.innerHTML;
-        const firstPart = name.substring(0, typedLength);
-        siteElement.innerHTML = name.replace(firstPart, `<span class="highlighted">${firstPart}</span>`);
+        const name = siteElement.textContent ?? "";
+        const prefixLength = Math.min(typedLength, name.length);
+        if (prefixLength === 0) {
+            siteElement.textContent = name;
+            continue;
+        }
+
+        const firstPart = name.substring(0, prefixLength);
+        const restPart = name.substring(prefixLength);
+        siteElement.textContent = "";
+
+        const highlighted = document.createElement("span");
+        highlighted.className = "highlighted";
+        highlighted.textContent = firstPart;
+
+        siteElement.appendChild(highlighted);
+        siteElement.appendChild(document.createTextNode(restPart));
     }
 }
