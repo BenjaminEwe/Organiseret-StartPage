@@ -1,7 +1,7 @@
 import { getSites, setSites } from "./storage.js";
 import { loadUrls, screenToggle, addSite, enterRemoveSitesMode } from "./ui.js";
 import { downloadSites, uploadSites } from "./importExport.js";
-import { toggleButtonVisibility, toggleScrollBar, updateAnimationSpeed, toggleLinkSorting, updateFirefoxOffset } from "./settings.js";
+import { toggleButtonVisibility, toggleScrollBar, updateAnimationSpeed, toggleLinkSorting, updateFirefoxOffset, toggleFocusGrabbing, toggleAutoLaunch, toggleLaunchInNewTab } from "./settings.js";
 import { loadGreeting, initGreetingListeners } from "./greeting.js";
 import { initController } from "./controller.js";
 import { STATES, setCurrentState } from "./state.js";
@@ -24,6 +24,10 @@ if (localStorage.getItem("animationSpeed") === null) {
 if (localStorage.getItem("sortLinks") === null) {
     localStorage.setItem("sortLinks", "false");
 }
+if (localStorage.getItem("launchInNewTab") === null) {
+    localStorage.setItem("launchInNewTab", "true");
+}
+
 
 // Helper commands
 const onClick = (element, func) => {
@@ -51,6 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Error uploading sites:", error);
         }
+    });
+    onClick("enableFocusGrabbing", toggleFocusGrabbing);
+    onClick("enableAutoLaunch", toggleAutoLaunch);
+    onClick("launchInNewTabCheckbox", () => {
+        toggleLaunchInNewTab();
+        loadUrls();
     });
 
     onChange("showSettingsIconCheckbox", () => toggleButtonVisibility('settingsIcon'));
@@ -101,8 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
         settingsIcon.addEventListener('keydown', event => {
             if (event.key === 'Enter' || event.key === ' ') screenToggle('settings');
         });
-        settingsIcon.addEventListener('mouseover', function() { this.style.opacity = 0.7; });
-        settingsIcon.addEventListener('mouseout', function() { this.style.opacity = 0.2; });
     }
     
 
@@ -127,8 +135,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!navigator.userAgent.includes("Firefox")) {
         console.debug("Hiding Firefox offset setting for non-Firefox browser");
         document.getElementById("firefoxOffsetSection").style.display = "none";
+    }
 
+    if (localStorage.getItem("doFocusGrabbing") === "true") {
+        document.getElementById("enableFocusGrabbing").checked = true;
+    }
+
+    if (localStorage.getItem("doAutoLaunch") === "true") {
+        document.getElementById("enableAutoLaunch").checked = true;
+    }
+
+    if (localStorage.getItem("launchInNewTab") === "true") {
+        document.getElementById("launchInNewTabCheckbox").checked = true;
     }
 });
-
-

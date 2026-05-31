@@ -1,7 +1,12 @@
-import { getSites, setSites } from "./storage.js";
+import * as storage from "./storage.js";
 import { STATES, getCurrentState, setCurrentState, clearCacheOnly } from "./state.js";
 
-// Go between different screens (main, settings, credits)
+/**
+ * Switches screen based on the provided ID.
+ * Works as a toggle - if provided ID is visible, hides it and shows main screen,
+ * if provided ID is hidden, shows it and hides the others.
+ * @param {\"rightBox\"|\"settings\"|\"credits\"} ID 
+ */
 export function screenToggle(ID) {
     const screens = ["rightBox", "settings", "credits"];
     const wasPressedScreenHidden = document.getElementById(ID).classList.contains("hidden");
@@ -37,6 +42,11 @@ export function screenToggle(ID) {
     }
 }
 
+/**
+ * Adds a new site to the list of sites based on values in siteNameInput and siteURLInput, then updates the UI.
+ * Normalizes to ensure URL starts with https:// and generates a UUID for the site.
+ * Does nothing if site name or URL is empty.
+ */
 export function addSite() {
     console.debug("Adding site...");
     let siteName = document.getElementById("siteNameInput").value;
@@ -54,19 +64,22 @@ export function addSite() {
     }
 
     console.debug("Adding site:", siteName, siteURL);
-    let sites = getSites();
-    sites.push({ name: siteName, url: siteURL, UUID: crypto.randomUUID() });
-
-    setSites(sites);
+    storage.appendSite({ name: siteName, url: siteURL, UUID: crypto.randomUUID() });
     loadUrls();
 }
 
+/**
+ * Sets the list of sites in the UI.
+ * If sites is provided, uses those sites, otherwise fetches site list from storage.
+ * Obeys "sortLinks" and "launchInNewTab" settings.
+ * @param {Site[]} sites 
+ */
 export function loadUrls(sites) {
     let siteList = document.getElementById("siteList");
     siteList.innerHTML = "";
 
     if (sites === undefined) {
-        sites = getSites();
+        sites = storage.getSites();
     }
     if (localStorage.getItem("sortLinks") === "true") {
         sites = sites.toSorted((a, b) => a.name.localeCompare(b.name));
@@ -78,6 +91,8 @@ export function loadUrls(sites) {
         link.dataset.UUID = site.UUID;
         link.textContent = site.name;
         link.className = "link";
+        link.target = localStorage.getItem("launchInNewTab") === "true" ? "_blank" : "_self";
+        link.rel = "noreferrer";
         if (getCurrentState() === STATES.EDIT) {
             link.onclick = removeSite;
             link.style.cursor = "pointer";
@@ -97,6 +112,10 @@ export function enterRemoveSitesMode() {
     setCurrentState(STATES.EDIT);
 }
 
+/**
+ * Removes the site of the event's current target both from the UI and from storage, then updates the UI.
+ * @param {Event} event 
+ */
 export function removeSite(event) {
     event.preventDefault();
     const site = event.currentTarget;
@@ -104,12 +123,11 @@ export function removeSite(event) {
     const siteUUID = site.dataset.UUID;
     console.debug("Removing site:", siteName, "UUID:", siteUUID);
 
-    let sites = getSites();
-    console.debug(siteName, "Removing site:", sites.filter(s => s.UUID === siteUUID));
-
-    sites = sites.filter(s => !(s.UUID === siteUUID));
-    site.remove(); // Not strictly necessary but nice visual feedback.
-    setSites(sites);
-    clearCacheOnly();
-    //loadUrls(filterOrSites(getSites()));
+    try {
+        storage.removeSite(siteUUID);
+        site.remove();
+        clearCacheOnly();
+    } catch (error) {
+        console.error("Error removing site with UUID " + siteUUID + ":", error);
+    }
 }

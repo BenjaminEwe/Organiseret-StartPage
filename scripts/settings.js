@@ -45,3 +45,18 @@ export function updateFirefoxOffset() {
     document.documentElement.style.setProperty('--firefox-offset', offset + "px");
     console.debug("Updated Firefox offset to:", offset);
 }
+
+export function toggleFocusGrabbing() {
+    const focusGrabbingCheckbox = document.getElementById("enableFocusGrabbing");
+    localStorage.setItem("doFocusGrabbing", focusGrabbingCheckbox.checked ? "true" : "false");
+}
+
+export function toggleAutoLaunch() {
+    const autoLaunchCheckbox = document.getElementById("enableAutoLaunch");
+    localStorage.setItem("doAutoLaunch", autoLaunchCheckbox.checked ? "true" : "false");
+}
+
+export function toggleLaunchInNewTab() {
+    const launchInNewTabCheckbox = document.getElementById("launchInNewTabCheckbox");
+    localStorage.setItem("launchInNewTab", launchInNewTabCheckbox.checked ? "true" : "false");
+}

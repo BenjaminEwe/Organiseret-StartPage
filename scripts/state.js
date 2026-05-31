@@ -1,3 +1,10 @@
+/**
+ * @typedef {Object} Site
+ * @property {string} name
+ * @property {string} url
+ * @property {string} UUID
+ */
+
 export const STATES = Object.freeze({
     EDIT: "edit",
     SETTINGS: "settings",
@@ -15,6 +22,11 @@ export function getTypedString() {
     return state.typedString;
 }
 
+/**
+ * Updates the typed string based on the provided key.
+ * If key is Backspace, also deletes cachedSites.
+ * @param {string} key 
+ */
 export function updateTypedString(key) {
     switch (key) {
     case 'Backspace':
@@ -31,9 +43,9 @@ export function getCachedSites() {
 }
 
 /**
- * 
- * @param {Array} sites to be used if cachedSites is null
- * @returns {Array} sites filtered according to typedString
+ * Filters cachedSites based on typedString. If cachedSites is null, uses provided sites to filter and caches the result.
+ * @param {Site[]} sites to be used if cachedSites is null
+ * @returns {Site[]} sites filtered according to typedString
  * @throws {Error} if sites is not an array
  */
 export function filterOrSites(sites) {
@@ -50,15 +62,18 @@ function isValidState(stateToCheck) {
     return Object.values(STATES).includes(stateToCheck);
 }
 
+/**
+ * Returns the current state of the application
+ * @returns 
+ */
 export function getCurrentState() {
     return state.currentState;
 }
 
 /**
  * Sets the current state of the application
- * @param {string} newState
+ * @param {typeof STATES[keyof typeof STATES]} newState
  * @throws {Error} if newState is not a valid state
- * Valid states are: STATES.EDIT, STATES.SETTINGS, STATES.CREDITS, STATES.MAIN
  */
 export function setCurrentState(newState) {
     if (!isValidState(newState)) {

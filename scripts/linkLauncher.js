@@ -18,10 +18,19 @@ export function attemptLaunchTypedWord() {
     // Launching of typed word if 1 match
     if (cachedSites.length === 1) {
         const site = cachedSites[0];
-        console.debug("Launching site:", site, "for typed word:", typedString);
-        window.open(site.url, "_blank", "noopener,noreferrer");
-        clearCache();
-        loadUrls();
+        if (localStorage.getItem("doAutoLaunch") === "true") {
+            console.debug("Auto-launching is enabled, launching site:", cachedSites[0]);
+            console.debug("launching with target:", (localStorage.getItem("launchInNewTab") === "true" ? "_blank" : "_self"));
+            window.open(
+                cachedSites[0].url,
+                (localStorage.getItem("launchInNewTab") === "true" ? "_blank" : "_self"),
+                "noreferrer");
+            clearCache();
+            loadUrls();
+        } else {
+            console.debug("Auto-launching is disabled, not launching site:", cachedSites[0]);
+            highlightTypedString(typedString);
+        }
     } else if (cachedSites.length === 0) {
         console.debug("No sites start with typed word:", typedString, "flushing typed string");
         clearCache();
@@ -29,6 +38,11 @@ export function attemptLaunchTypedWord() {
     } else {
         console.debug(cachedSites.length, "sites start with typed word:", typedString);
         highlightTypedString(typedString);
+    }
+
+    const firstSite = document.getElementById("siteList").getElementsByClassName("link")[0];
+    if (firstSite) {
+        firstSite.focus();
     }
 }
 

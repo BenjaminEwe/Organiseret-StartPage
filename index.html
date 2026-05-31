@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Start Page</title>
+
+    <script src="scripts/focusManager.js" fetchpriority="high"></script>
     
     <link rel="preload" as="image"
         href="images/endless-clouds.svg"
@@ -36,10 +38,11 @@
     <link rel="icon" href="images/flower.svg" type="image/x-icon">
 </head>
 <body>
-    <img 
-    src="images/settings.svg"
-    alt="Settings"
+    <img
     id="settingsIcon"
+    src="images/settings.svg"
+    class="hoverable"
+    alt="Settings"
     tabindex="0"
     role="button"
     title="ctrl+s"
@@ -47,6 +50,7 @@
     >
     <button
     id="creditsLink"
+    class="hoverable"
     aria-label="Credits"
     title="ctrl+c"
     >Credits
@@ -68,78 +72,99 @@
             decoding="sync"
             >
         </div>
-        <div class="rightBox" id="rightBox">
+        <div class="rightBox" id="rightBox" tabindex="-1">
             <h1 class="title" id="greeting"> Welcome user </h1>
             <h2 class="subtitle" id="subGreeting"> Press the settings icon in the top right or ctrl+s to add sites </h2>
             <p></p>
-            <div id="siteList">
+            <div id="siteList" tabindex="-1">
             </div>
         </div>
-        <div id="settings" class="rightBox hidden">
+        <div id="settings" class="rightBox hidden" tabindex="-1">
             <h1 class="title"> Settings </h1>
+            <h2 class="subtitle"> Hover over a setting for details </h2>
 
             <div class="settingsSection">
-                <label class="subtitle" for="greetingInput"> Greeting: </label>
-                <input type="text" placeholder="Greeting text" class="inputField" id="greetingInput">
+                <label class="subtitle" for="greetingInput"> Greeting </label>
+                <input type="text" placeholder="Greeting text" class="inputField wideField" id="greetingInput">
             </div>
 
             <div class="settingsSection">
-                <label class="subtitle" for="subGreetingInput"> Sub greeting: </label>
-                <input type="text" placeholder="Sub greeting text" class="inputField" id="subGreetingInput">
+                <label class="subtitle" for="subGreetingInput"> Sub greeting </label>
+                <input type="text" placeholder="Sub greeting text" class="inputField wideField" id="subGreetingInput">
             </div>
-            <div class="settingsSection">
-                <form id="addSiteForm">
+            <form class="settingsSection" id="addSiteForm">
                     <input type="submit" value="Add Site" class="button">
                     <input type="text" placeholder="Site name" class="inputField" name="siteName" id="siteNameInput">
                     <input type="text" placeholder="Site URL" class="inputField" name="siteUrl" id="siteURLInput">
-                </form>
-            </div>
-            <div class="settingsSection">
-                <button class="button" id="removeSitesBtn">Remove Sites</button>
-            </div>
-            <div class="settingsSection">
-                <label class="subtitle" for="showSettingsIconCheckbox"> Settings icon: </label>
+            </form>
+            <div class="settingsSection" title="Toggle the visibility of the settings icon in the top right corner (you can still access it with ctrl+s)">
+                <label class="subtitle" for="showSettingsIconCheckbox"> Settings icon </label>
                 <label class="switch">
                     <input type="checkbox" id="showSettingsIconCheckbox">
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="settingsSection">
-                <label class="subtitle" for="showCreditsLinkCheckbox"> Credits link: </label>
+            <div class="settingsSection" title="Show the credits link in the bottom right corner (you can still access it with ctrl+c)">
+                <label class="subtitle" for="showCreditsLinkCheckbox"> Credits link </label>
                 <label class="switch">
                     <input type="checkbox" id="showCreditsLinkCheckbox">
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="settingsSection">
-                <label class="subtitle" for="showScrollBarCheckbox"> Scroll bar: </label>
+            <div class="settingsSection" title="Show a scroll bar on the main page when you have more links than fit the box">
+                <label class="subtitle" for="showScrollBarCheckbox"> Scroll bar </label>
                 <label class="switch">
                     <input type="checkbox" id="showScrollBarCheckbox">
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="settingsSection">
-                <label class="subtitle" for="sortLinksCheckbox"> Sort links: </label>
+            <div class="settingsSection" title="Sort links alphabetically">
+                <label class="subtitle" for="sortLinksCheckbox"> Sort links </label>
                 <label class="switch">
                     <input type="checkbox" id="sortLinksCheckbox">
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="settingsSection">
-                <label class="subtitle" for="animationSpeedSlider"> Animation speed: </label>
-                <input type="range" min="0" max="25" value="15" class="animSlider" id="animationSpeedSlider" name="animation Speed Slider">
+            <div class="settingsSection" title="Have keyboard focus on the new tab page instead of the address bar.">
+                <label class="subtitle" for="enableFocusGrabbing"> Focus grabbing </label>
+                <label class="switch">
+                    <input type="checkbox" id="enableFocusGrabbing">
+                    <span class="slider"></span>
+                </label>
             </div>
-            <div class="settingsSection" id="firefoxOffsetSection">
-                <label class="subtitle" for="firefoxOffsetSlider"> Firefox offset: </label>
-                <input type="range" min="0" max="1" step="0.05" value="0.5" class="animSlider" id="firefoxOffsetSlider" name="firefox Offset Slider">
+            <div class="settingsSection" title="Launch typed URLs automatically.">
+                <label class="subtitle" for="enableAutoLaunch"> Auto-launch </label>
+                <label class="switch">
+                    <input type="checkbox" id="enableAutoLaunch">
+                    <span class="slider"></span>
+                </label>
             </div>
-            <div class="settingsSection">
-                <h2 class="subtitle"> Import / Export: </h2>
+            <div class="settingsSection" title="Launch sites in a new tab instead of the current tab.">
+                <label class="subtitle" for="launchInNewTabCheckbox"> Launch in new tab </label>
+                <label class="switch">
+                    <input type="checkbox" id="launchInNewTabCheckbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settingsSection" title="Adjust the speed of the background animation. Setting it to 0 will disable it.">
+                <label class="subtitle" for="animationSpeedSlider"> Animation speed </label>
+                <input type="range" min="0" max="25" value="15" class="rangeSlider" id="animationSpeedSlider" name="animation Speed Slider">
+            </div>
+            <div class="settingsSection" id="firefoxOffsetSection" title="A Firefox quirk makes the background sometimes show small gaps between the tiles. Try adjusting this slider until the gaps disappear.">
+                <label class="subtitle" for="firefoxOffsetSlider"> Firefox offset </label>
+                <input type="range" min="0" max="1" step="0.01" value="0.5" class="rangeSlider" id="firefoxOffsetSlider" name="firefox Offset Slider">
+            </div>
+            <div class="settingsSection" title="In removed mode, click a site to remove it. Press escape to exit remove mode.">
+                <label class="subtitle" for="removeSitesBtn"> Remove sites </label>
+                <button class="button" id="removeSitesBtn">Enter Remove Mode</button>
+            </div>
+            <div class="settingsSection" title="Download a list of your sites as a TOML file, or upload a TOML file. Warning: Uploading overwrites your current sites!">
+                <h2 class="subtitle"> Import / Export </h2>
                 <button class="button" id="downloadSitesBtn">Download Sites</button>
                 <button class="button" id="uploadSitesBtn">Upload Sites</button>
             </div>
         </div>
-        <div id="credits" class="rightBox hidden">
+        <div id="credits" class="rightBox hidden" tabindex="-1">
             <p>Inspired by <a href="https://archive.ph/e5ziv">Homely Startpage</a> by Bogdantalant</p>
             <p><a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY">Pink and white flowers under blue sky during daytime</a> by <a href="https://unsplash.com/@roscoadrian?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Adrian &quot;Rosco&quot; Stef</a> on <a href="https://unsplash.com/photos/pink-and-white-flowers-under-blue-sky-during-daytime-b__D6IoYqGY?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a> - <a href="https://unsplash.com/license">Unsplash License</a></p>
             <p><a href="https://heropatterns.com/">Endless Clouds</a> by <a href="https://heropatterns.com/">Steve Schoger</a> - <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
