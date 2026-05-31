@@ -3,6 +3,8 @@ import { loadUrls, screenToggle } from "./ui.js";
 import { updateSiteCache, attemptLaunchTypedWord } from "./linkLauncher.js";
 import { loadGreeting } from "./greeting.js";
 
+const VALID_KEY_REGEX = /^[a-zA-Z0-9 ,._-]$/;
+
 /**
  * Sets keydown event listeners to allow keyboard navigation and search.
  */
@@ -23,9 +25,9 @@ export function initController() {
                     loadUrls();
                 } else if (event.key === 'Backspace') {
                     updateTypedString(event.key);
-                    updateSiteCache()
+                    updateSiteCache();
                     attemptLaunchTypedWord();
-                } else if (/^[a-zA-Z0-9 ,._-]$/.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
+                } else if (VALID_KEY_REGEX.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
                     updateTypedString(event.key);
                     updateSiteCache();
                     attemptLaunchTypedWord();
@@ -56,7 +58,7 @@ export function initController() {
                 } else if (event.key === 'Backspace') {
                     updateTypedString(event.key);
                     updateSiteCache();
-                } else if (/^[a-zA-Z0-9]$/.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
+                } else if (VALID_KEY_REGEX.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
                     updateTypedString(event.key);
                     updateSiteCache();
                 }

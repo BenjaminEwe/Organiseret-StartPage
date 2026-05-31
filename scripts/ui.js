@@ -1,5 +1,5 @@
 import * as storage from "./storage.js";
-import { STATES, getCurrentState, setCurrentState, clearCacheOnly } from "./state.js";
+import { STATES, getCurrentState, setCurrentState, clearCache, clearCacheOnly } from "./state.js";
 
 /**
  * Switches screen based on the provided ID.
@@ -103,6 +103,7 @@ export function loadUrls(sites) {
 }
 
 export function enterRemoveSitesMode() {
+    clearCache();
     console.debug("Entering edit mode...");
     setCurrentState(STATES.EDIT);
     loadUrls();

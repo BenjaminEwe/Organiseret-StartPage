@@ -4,7 +4,7 @@ import { downloadSites, uploadSites } from "./importExport.js";
 import { toggleButtonVisibility, toggleScrollBar, updateAnimationSpeed, toggleLinkSorting, updateFirefoxOffset, toggleFocusGrabbing, toggleAutoLaunch, toggleLaunchInNewTab } from "./settings.js";
 import { loadGreeting, initGreetingListeners } from "./greeting.js";
 import { initController } from "./controller.js";
-import { STATES, setCurrentState } from "./state.js";
+import { STATES, setCurrentState, clearCache } from "./state.js";
 
 initController();
 
@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     onClick("downloadSitesBtn", () => downloadSites(getSites()));
     onClick("uploadSitesBtn", async () => {
         try {
+            clearCache();
             const sites = await uploadSites();
             setSites(sites);
             loadUrls();

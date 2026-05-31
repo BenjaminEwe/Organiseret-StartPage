@@ -4,6 +4,7 @@ import { loadUrls } from "./ui.js";
 
 export function updateSiteCache() {
     loadUrls(filterOrSites(getSites()));
+    highlightTypedString(getTypedString());
 }
 
 export function attemptLaunchTypedWord() {
@@ -19,17 +20,16 @@ export function attemptLaunchTypedWord() {
     if (cachedSites.length === 1) {
         const site = cachedSites[0];
         if (localStorage.getItem("doAutoLaunch") === "true") {
-            console.debug("Auto-launching is enabled, launching site:", cachedSites[0]);
+            console.debug("Auto-launching is enabled, launching site:", site);
             console.debug("launching with target:", (localStorage.getItem("launchInNewTab") === "true" ? "_blank" : "_self"));
             window.open(
-                cachedSites[0].url,
+                site.url,
                 (localStorage.getItem("launchInNewTab") === "true" ? "_blank" : "_self"),
                 "noreferrer");
             clearCache();
             loadUrls();
         } else {
-            console.debug("Auto-launching is disabled, not launching site:", cachedSites[0]);
-            highlightTypedString(typedString);
+            console.debug("Auto-launching is disabled, not launching site:", site);
         }
     } else if (cachedSites.length === 0) {
         console.debug("No sites start with typed word:", typedString, "flushing typed string");
@@ -37,7 +37,6 @@ export function attemptLaunchTypedWord() {
         loadUrls();
     } else {
         console.debug(cachedSites.length, "sites start with typed word:", typedString);
-        highlightTypedString(typedString);
     }
 
     const firstSite = document.getElementById("siteList").getElementsByClassName("link")[0];
@@ -53,7 +52,6 @@ function highlightTypedString(typedString) {
     for (let siteElement of sites) {
         let name = siteElement.innerHTML;
         const firstPart = name.substring(0, typedLength);
-        const restPart = name.substring(typedLength);
         siteElement.innerHTML = name.replace(firstPart, `<span class="highlighted">${firstPart}</span>`);
     }
 }
